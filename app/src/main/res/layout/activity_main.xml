@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/signalStrengt1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/signalStrengt2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="LTE"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellMcc"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellMnc"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="-100 dbm" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="364dp"
+        android:layout_height="36dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellPci"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:text="20000"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellTac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="001"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>
