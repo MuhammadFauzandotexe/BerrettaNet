@@ -1,4 +1,5 @@
 package com.zan.beretta;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -6,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.CellInfo;
 import android.telephony.CellInfoLte;
-import android.telephony.CellSignalStrength;
+import android.telephony.CellSignalStrengthLte;
 import android.telephony.TelephonyManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView signalStrengthTextView;
+    private TextView cellMcc;
+    private TextView cellMnc;
+    private TextView cellId;
     private TelephonyManager telephonyManager;
+
     private Handler handler;
     private Runnable updateSignalTask;
 
@@ -29,24 +34,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         signalStrengthTextView = findViewById(R.id.signalStrengt1);
+        cellMcc = findViewById(R.id.cellMcc);
+        cellMnc = findViewById(R.id.cellMnc);
+        cellId = findViewById(R.id.cellID);
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
         handler = new Handler();
 
-        // Periksa izin ACCESS_FINE_LOCATION jika diperlukan
+        // Periksa izin ACCESS_FINE_LOCATION
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
+        } else {
+            startSignalStrengthUpdates();
         }
+    }
 
-        // Jalankan pembaruan sinyal secara periodik setiap 1 detik
+    private void startSignalStrengthUpdates() {
         updateSignalTask = new Runnable() {
             @Override
             public void run() {
                 updateSignalStrength();
-                handler.postDelayed(this, 10000); // Jalankan lagi setelah 1 detik
+                handler.postDelayed(this, 5000); // Update setiap 10 detik
             }
         };
         handler.post(updateSignalTask);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startSignalStrengthUpdates();
+        } else {
+            Toast.makeText(this, "Izin diperlukan untuk mendapatkan sinyal", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -59,16 +80,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateSignalStrength() {
         try {
-            List<CellInfo> cellInfoList = telephonyManager.getAllCellInfo();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
 
+            List<CellInfo> cellInfoList = telephonyManager.getAllCellInfo();
             if (cellInfoList != null) {
                 for (CellInfo cellInfo : cellInfoList) {
                     if (cellInfo instanceof CellInfoLte) {
-                        CellSignalStrength signalStrength = ((CellInfoLte) cellInfo).getCellSignalStrength();
-                        int rsrp = signalStrength.getDbm();
+                        CellInfoLte cellInfoLte = (CellInfoLte) cellInfo;
+                        CellSignalStrengthLte signalStrengthLte = cellInfoLte.getCellSignalStrength();
 
-                        // Perbarui TextView dengan nilai RSRP
-                        signalStrengthTextView.setText("RSRP: " + rsrp + " dBm");
+                        int rsrp = signalStrengthLte.getRsrp();
+                        int rsrq = signalStrengthLte.getRsrq();
+                        int snr = signalStrengthLte.getRssnr();
+                        int cid = cellInfoLte.getCellIdentity().getCi();
+
+                        // Perbarui TextView dengan nilai sinyal dan identitas seluler
+                        signalStrengthTextView.setText("RSRP: " + rsrp + " dBm\nRSRQ: " + rsrq + " dB\nSNR: " + snr + " dB");
+                        cellId.setText("Cell ID: " + cid);
+                        cellMcc.setText("MCC: " + cellInfoLte.getCellIdentity().getMcc());
+                        cellMnc.setText("MNC: " + cellInfoLte.getCellIdentity().getMnc());
                         return;
                     }
                 }
