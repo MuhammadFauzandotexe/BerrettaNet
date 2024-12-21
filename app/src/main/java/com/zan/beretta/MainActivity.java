@@ -9,20 +9,29 @@ import android.telephony.CellInfo;
 import android.telephony.CellInfoLte;
 import android.telephony.CellSignalStrengthLte;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView signalStrengthTextView;
+    private TextView cellRsrp;
+    private TextView cellRsrq;
+    private TextView cellSnr;
     private TextView cellMcc;
     private TextView cellMnc;
     private TextView cellId;
+    private TextView cellPci;
+    private TextView cellTac;
+
     private TelephonyManager telephonyManager;
 
     private Handler handler;
@@ -33,10 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        signalStrengthTextView = findViewById(R.id.signalStrengt1);
+        cellRsrp = findViewById(R.id.cellRsrp);
+        cellRsrq = findViewById(R.id.cellRsrq);
+        cellSnr = findViewById(R.id.cellSnr);
         cellMcc = findViewById(R.id.cellMcc);
         cellMnc = findViewById(R.id.cellMnc);
         cellId = findViewById(R.id.cellID);
+        cellPci = findViewById(R.id.cellPci);
+        cellTac = findViewById(R.id.cellTac);
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
         handler = new Handler();
@@ -54,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 updateSignalStrength();
-                handler.postDelayed(this, 5000); // Update setiap 10 detik
+                handler.postDelayed(this, 100); // Update setiap 10 detik
             }
         };
         handler.post(updateSignalTask);
@@ -93,25 +106,44 @@ public class MainActivity extends AppCompatActivity {
 
                         int rsrp = signalStrengthLte.getRsrp();
                         int rsrq = signalStrengthLte.getRsrq();
-                        int snr = signalStrengthLte.getRssnr();
                         int cid = cellInfoLte.getCellIdentity().getCi();
+                        int pci = cellInfoLte.getCellIdentity().getPci();
+                        int tac = cellInfoLte.getCellIdentity().getTac();
+                        long bandwidth = cellInfoLte.getCellIdentity().getBandwidth();
+                        int rssnr = cellInfoLte.getCellSignalStrength().getRssnr();
+                        int cqi = cellInfoLte.getCellSignalStrength().getCqi();
+                        int rssi = cellInfoLte.getCellSignalStrength().getRssi();
+                        int level = cellInfoLte.getCellSignalStrength().getLevel();
+                        int dbm = cellInfoLte.getCellSignalStrength().getDbm();
+                        long timeStamp = cellInfoLte.getTimeStamp();
+                        int timingAdvance = cellInfoLte.getCellSignalStrength().getTimingAdvance();
+                        int asuLevel = cellInfoLte.getCellSignalStrength().getAsuLevel();
 
-                        // Perbarui TextView dengan nilai sinyal dan identitas seluler
-                        signalStrengthTextView.setText("RSRP: " + rsrp + " dBm\nRSRQ: " + rsrq + " dB\nSNR: " + snr + " dB");
-                        cellId.setText("Cell ID: " + cid);
-                        cellMcc.setText("MCC: " + cellInfoLte.getCellIdentity().getMcc());
-                        cellMnc.setText("MNC: " + cellInfoLte.getCellIdentity().getMnc());
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HHmmSS", Locale.getDefault());
+                        String formattedDate = sdf.format(new Date(timeStamp));
+                        long snr = rsrp / bandwidth;
+
+                        cellRsrp.setText("RSSNR: " + rssnr + " dBm");
+                        cellRsrq.setText("RSSIa: " + rssi + " dB");
+                        cellSnr.setText("CQI: " + cqi + " dB");
+                        cellId.setText("Level: " + level);
+                        cellMcc.setText("DBM: " + dbm);
+                        cellMnc.setText("ASU Level: " + asuLevel);
+                        cellPci.setText("Tima Stamp: " + formattedDate);
+                        cellTac.setText("TAC: " + timingAdvance);
+
                         return;
                     }
                 }
-                signalStrengthTextView.setText("Tidak ada informasi LTE tersedia");
+                cellRsrp.setText("Tidak ada informasi LTE tersedia");
             } else {
-                signalStrengthTextView.setText("Gagal mendapatkan informasi sinyal");
+                cellRsrp.setText("Gagal mendapatkan informasi sinyal");
             }
         } catch (SecurityException e) {
             Toast.makeText(this, "Izin akses lokasi diperlukan untuk mendapatkan sinyal", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            signalStrengthTextView.setText("Error: " + e.getMessage());
+            Log.e("Error", "UpdateSignalStrength Error: " + e.getMessage());
+            cellRsrp.setText("Error: " + e.getMessage());
         }
     }
 }

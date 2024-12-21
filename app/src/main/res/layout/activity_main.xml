@@ -9,54 +9,68 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellRsrp"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:text="null"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cellRsrq"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:text="null"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="38dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/signalStrengt1"
+            android:id="@+id/cellSnr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="16sp" />
+            android:layout_height="66dp"
+            android:text="null"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/signalStrengt2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/cellID"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="LTE"
-            android:textSize="16sp" />
+            android:text="null"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="30dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/cellMcc"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="3" />
+            android:layout_height="69dp"
+            android:text="null"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -66,9 +80,10 @@
 
         <TextView
             android:id="@+id/cellMnc"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="-100 dbm" />
+            android:layout_width="492dp"
+            android:layout_height="73dp"
+            android:text="null"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,8 +95,8 @@
             android:id="@+id/cellPci"
             android:layout_width="match_parent"
             android:layout_height="84dp"
-            android:text="20000"
-            android:textSize="16sp" />
+            android:text="null"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,10 +106,10 @@
 
         <TextView
             android:id="@+id/cellTac"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="001"
-            android:textSize="16sp" />
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:text="null"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>
